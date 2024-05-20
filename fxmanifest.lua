@@ -18,3 +18,4 @@ files {
 	'html/css/*.css',
 	'html/js/*.js'
 }
+dependency 'PolyZone'
